@@ -2,9 +2,11 @@ openapi: 3.0.3
 info:
   title: TODO App API
   version: 1.0.0
+servers:
+  - url: http://localhost:8080/
 tags:
-  - name: Users
-    description: User registration and login
+  - name: Accounts
+    description: Account registration and login
   - name: Lists
     description: Manage task lists
   - name: Tasks
@@ -13,8 +15,8 @@ tags:
 paths:
   /users:
     post:
-      tags: [Users]
-      summary: Create user
+      tags: [Accounts]
+      summary: Create account
       requestBody:
         required: true
         content:
@@ -30,12 +32,12 @@ paths:
               required: [email, password]
       responses:
         '201':
-          description: User created
+          description: Account created
 
   /login:
     post:
-      tags: [Users]
-      summary: Login user
+      tags: [Accounts]
+      summary: Login account
       requestBody:
         required: true
         content:
