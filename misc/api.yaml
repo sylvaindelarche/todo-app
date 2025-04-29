@@ -55,6 +55,8 @@ paths:
           description: Login successful
         '401':
           description: Unauthorized
+        '404':
+          $ref: '#/components/responses/NotFoundError'
 
   /lists:
     post:
@@ -75,50 +77,6 @@ paths:
       responses:
         '201':
           description: List created
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-
-  /lists/{listId}:
-    patch:
-      tags: [Lists]
-      summary: Update list
-      security:
-        - bearerAuth: []
-      parameters:
-        - in: path
-          name: listId
-          required: true
-          schema:
-            type: integer
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                title:
-                  type: string
-      responses:
-        '200':
-          description: List updated
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-
-    delete:
-      tags: [Lists]
-      summary: Remove list
-      security:
-        - bearerAuth: []
-      parameters:
-        - in: path
-          name: listId
-          required: true
-          schema:
-            type: integer
-      responses:
-        '204':
-          description: List deleted
         '401':
           $ref: '#/components/responses/UnauthorizedError'
 
@@ -157,10 +115,58 @@ paths:
         '401':
           $ref: '#/components/responses/UnauthorizedError'
 
+  /lists/{listId}:
+    patch:
+      tags: [Lists]
+      summary: Update list
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: listId
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+      responses:
+        '200':
+          description: List updated
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+    delete:
+      tags: [Lists]
+      summary: Remove list
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: listId
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: List deleted
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
   /lists/{listId}/archive:
     post:
       tags: [Lists]
-      summary: Archive list
+      summary: Archive or unarchive list (switches active status)
       security:
         - bearerAuth: []
       parameters:
@@ -171,9 +177,11 @@ paths:
             type: integer
       responses:
         '200':
-          description: List archived
+          description: List archived or unarchived
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
 
   /lists/{listId}/tasks:
     post:
@@ -229,6 +237,8 @@ paths:
           description: Task updated
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
 
     delete:
       tags: [Tasks]
@@ -246,11 +256,13 @@ paths:
           description: Task deleted
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
 
   /tasks/{taskId}/complete:
     post:
       tags: [Tasks]
-      summary: Complete task
+      summary: Complete or uncomplete task (switches completed status)
       security:
         - bearerAuth: []
       parameters:
@@ -261,9 +273,11 @@ paths:
             type: integer
       responses:
         '200':
-          description: Task marked as completed
+          description: Task marked as completed or uncompleted
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
 
 components:
   securitySchemes:
@@ -283,3 +297,13 @@ components:
               message:
                 type: string
                 example: Unauthorized – Bearer token is missing or invalid
+    NotFoundError:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Not found
