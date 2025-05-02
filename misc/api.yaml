@@ -185,7 +185,7 @@ paths:
 
   /lists/{listId}/tasks:
     post:
-      tags: [Tasks]
+      tags: [Lists]
       summary: Create task
       security:
         - bearerAuth: []
