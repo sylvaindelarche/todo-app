@@ -14,16 +14,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
+import me.sylvain.todo.persistence.entity.Task;
+import me.sylvain.todo.persistence.entity.TaskDTO;
 import me.sylvain.todo.persistence.entity.TodoList;
 import me.sylvain.todo.persistence.entity.TodoListDTO;
 import me.sylvain.todo.persistence.repository.ListRepository;
+import me.sylvain.todo.persistence.repository.TaskRepository;
 
 @RestController
 @RequestMapping("/lists")
 public class ListController {
     private final ListRepository listRepository;
+    private final TaskRepository taskRepository;
 
-    public ListController(ListRepository listRepository) {
+    public ListController(ListRepository listRepository, TaskRepository taskRepository) {
+        this.taskRepository = taskRepository;
         this.listRepository = listRepository;
     }
     
@@ -62,5 +67,20 @@ public class ListController {
             list.setActive(list.isActive() ? false : true);
             return ResponseEntity.status(HttpStatus.OK).body(listRepository.save(list));
         }).orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    }
+
+    @PostMapping("/{id}/tasks")
+    public ResponseEntity<Task> createTask(@PathVariable Long id, @Valid @RequestBody TaskDTO taskDTO) {
+
+        Task task = new Task();
+        if (taskDTO.getName() != null) task.setName(taskDTO.getName());
+
+        TodoList list = listRepository.findById(id).orElse(null);
+        if (list == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        list.getTasks().add(task);
+        task.setList(list);
+        return ResponseEntity.status(HttpStatus.OK).body(taskRepository.save(task));
     }
 }
