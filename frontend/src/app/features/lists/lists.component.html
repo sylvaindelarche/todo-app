@@ -1,0 +1,37 @@
+<table>
+    @for (list of lists(); track list.id) {
+        <tr>
+            <td>
+                <app-list [listId]="list.id"></app-list>
+            </td>
+            <td>
+                <button (click)="onDeleteList(list.id)">x</button><button (click)="onArchiveList(list.id)">A</button>
+                @if (list.archived) {
+                    <i>{{ list.title }}</i>
+                }
+                @else {
+                    {{ list.title }}
+                }
+            </td>
+            @for (task of list.tasks; track task.id) {
+                <td>
+                    <button (click)="onDeleteTask(list.id, task.id)">x</button><button (click)="onCompleteTask(list.id, task.id)">C</button>
+                    @if (task.completed) {
+                        <i>{{ task.name }}</i>
+                    }
+                    @else {
+                        {{ task.name }}
+                    }
+                </td>
+            }
+        </tr>
+    }
+</table>
+<hr />
+<div>
+  <label for="addList">
+    List title:
+    <input id="addList" type="text" [(ngModel)]="listTitle" />
+  </label>
+  <button (click)="onAddList()">Add</button>
+</div>
