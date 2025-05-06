@@ -31,7 +31,8 @@
 <div>
   <label for="addList">
     List title:
-    <input id="addList" type="text" [(ngModel)]="listTitle" />
+    <input id="addList" type="text" pInputText class="w-full" [(ngModel)]="listTitle" />
+    <i class="pi pi-check"></i>
   </label>
   <button (click)="onAddList()">Add</button>
 </div>
