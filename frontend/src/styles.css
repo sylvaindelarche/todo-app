@@ -2,3 +2,7 @@
 @import "tailwindcss";
 @plugin "tailwindcss-primeui";
 @import "primeicons/primeicons.css";
+
+:root {
+  --p-card-background: #f8f8f8;
+}

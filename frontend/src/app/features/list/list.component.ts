@@ -1,10 +1,11 @@
 import { Component, inject, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TodoListService } from '../../shared/data-access/todo-list.service';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
   selector: 'app-list',
-  imports: [FormsModule],
+  imports: [FormsModule, InputTextModule],
   templateUrl: './list.component.html',
   styleUrl: './list.component.css'
 })

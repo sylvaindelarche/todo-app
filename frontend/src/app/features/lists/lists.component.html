@@ -1,38 +1,30 @@
-<table>
+<div class="mx-50 mt-20 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-16">
+    <div>
+        <label for="addList">
+            Add list:
+            <div class="flex items-center">
+                <input id="addList" type="text" pInputText class="w-full" [(ngModel)]="listTitle" />
+                <i class="pi pi-plus text-2xl" (click)="onAddList()"></i>
+            </div>
+        </label>
+    </div>
     @for (list of lists(); track list.id) {
-        <tr>
-            <td>
-                <app-list [listId]="list.id"></app-list>
-            </td>
-            <td>
-                <button (click)="onDeleteList(list.id)">x</button><button (click)="onArchiveList(list.id)">A</button>
-                @if (list.archived) {
-                    <i>{{ list.title }}</i>
-                }
-                @else {
-                    {{ list.title }}
-                }
-            </td>
+        <p-card class="">
+            <ng-template #title>
+                <div class="flex gap-2 items-center">
+                    <span>{{ list.archived ? list.title + " (A)" : list.title }}</span>
+                    <i class="pi pi-times text-sm" (click)="onDeleteList(list.id)"></i>
+                    <i class="pi pi-check text-sm" (click)="onArchiveList(list.id)"></i>
+                </div>
+            </ng-template>
             @for (task of list.tasks; track task.id) {
-                <td>
-                    <button (click)="onDeleteTask(list.id, task.id)">x</button><button (click)="onCompleteTask(list.id, task.id)">C</button>
-                    @if (task.completed) {
-                        <i>{{ task.name }}</i>
-                    }
-                    @else {
-                        {{ task.name }}
-                    }
-                </td>
+                <div class="flex gap-2 items-center">
+                    <span>{{ task.completed ? task.name + " (C)" : task.name }}</span>
+                    <i class="pi pi-times text-xs" (click)="onDeleteTask(list.id, task.id)"></i>
+                    <i class="pi pi-check text-xs" (click)="onCompleteTask(list.id, task.id)"></i>
+                </div>
             }
-        </tr>
+            <app-list [listId]="list.id"></app-list>
+        </p-card>
     }
-</table>
-<hr />
-<div>
-  <label for="addList">
-    List title:
-    <input id="addList" type="text" pInputText class="w-full" [(ngModel)]="listTitle" />
-    <i class="pi pi-check"></i>
-  </label>
-  <button (click)="onAddList()">Add</button>
 </div>

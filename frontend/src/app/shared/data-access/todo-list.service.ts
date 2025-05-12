@@ -5,7 +5,10 @@ import { Task } from '../models/task.model';
 const TODO_LISTS: TodoList[] = [
   { id: 1, title: 'List 1', archived: false, tasks: [{id: 1, name: 'Task 1', completed: false}, {id: 2, name: 'Task 2', completed: false}] },
   { id: 2, title: 'List 2', archived: false, tasks: [{id: 3, name: 'Task 3', completed: false}] },
-  { id: 3, title: 'List 3', archived: false, tasks: [{id: 4, name: 'Task 4', completed: false}, {id: 5, name: 'Task 5', completed: false}, {id: 6, name: 'Task 6', completed: false}] }
+  { id: 3, title: 'List 3', archived: false, tasks: [{id: 4, name: 'Task 4', completed: false}, {id: 5, name: 'Task 5', completed: false}, {id: 6, name: 'Task 6', completed: false}] },
+  { id: 4, title: 'List 4', archived: true, tasks: [{id: 7, name: 'Task 7', completed: false}] },
+  { id: 5, title: 'List 5', archived: false, tasks: [{id: 8, name: 'Task 8', completed: false}] },
+  { id: 6, title: 'List 6', archived: false, tasks: [{id: 9, name: 'Task 9', completed: true}] },
 ]; // TODO temporary mocking until service handles real backend communication
 
 @Injectable({

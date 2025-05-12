@@ -1,5 +1,4 @@
-<label for={{`addTask${listId}`}}>
-    Add task:
-    <input id={{`addTask${listId}`}} type="text" [(ngModel)]="newTaskName" />
-</label>
-<button (click)="onAddTask(listId)">Add</button>
+<div class="flex items-center">
+    <input id={{`addTask${listId}`}} type="text" pInputText pSize="small" [(ngModel)]="newTaskName" />
+    <i class="pi pi-plus text-2xl" (click)="onAddTask(listId)"></i>
+</div>

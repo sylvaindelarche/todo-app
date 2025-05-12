@@ -3,10 +3,11 @@ import { TodoListService } from '../../shared/data-access/todo-list.service';
 import { FormsModule } from '@angular/forms';
 import { ListComponent } from '../list/list.component';
 import { InputTextModule } from 'primeng/inputtext';
+import { CardModule } from 'primeng/card';
 
 @Component({
   selector: 'app-lists',
-  imports: [FormsModule, ListComponent, InputTextModule],
+  imports: [FormsModule, ListComponent, InputTextModule, CardModule],
   templateUrl: './lists.component.html',
   styleUrl: './lists.component.css'
 })
