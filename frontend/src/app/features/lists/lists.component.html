@@ -1,7 +1,7 @@
 <div class="mx-50 mt-20 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-16">
     <div>
         <label for="addList">
-            Add list:
+            <span>Add list:</span>
             <div class="flex items-center">
                 <input id="addList" type="text" pInputText class="w-full" [(ngModel)]="listTitle" />
                 <i class="pi pi-plus text-2xl" (click)="onAddList()"></i>
@@ -9,22 +9,6 @@
         </label>
     </div>
     @for (list of lists(); track list.id) {
-        <p-card class="">
-            <ng-template #title>
-                <div class="flex gap-2 items-center">
-                    <span>{{ list.archived ? list.title + " (A)" : list.title }}</span>
-                    <i class="pi pi-times text-sm" (click)="onDeleteList(list.id)"></i>
-                    <i class="pi pi-check text-sm" (click)="onArchiveList(list.id)"></i>
-                </div>
-            </ng-template>
-            @for (task of list.tasks; track task.id) {
-                <div class="flex gap-2 items-center">
-                    <span>{{ task.completed ? task.name + " (C)" : task.name }}</span>
-                    <i class="pi pi-times text-xs" (click)="onDeleteTask(list.id, task.id)"></i>
-                    <i class="pi pi-check text-xs" (click)="onCompleteTask(list.id, task.id)"></i>
-                </div>
-            }
-            <app-list [listId]="list.id"></app-list>
-        </p-card>
+        <app-list [list]="list"></app-list>
     }
 </div>

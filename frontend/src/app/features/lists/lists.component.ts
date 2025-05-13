@@ -3,11 +3,10 @@ import { TodoListService } from '../../shared/data-access/todo-list.service';
 import { FormsModule } from '@angular/forms';
 import { ListComponent } from '../list/list.component';
 import { InputTextModule } from 'primeng/inputtext';
-import { CardModule } from 'primeng/card';
 
 @Component({
   selector: 'app-lists',
-  imports: [FormsModule, ListComponent, InputTextModule, CardModule],
+  imports: [FormsModule, ListComponent, InputTextModule],
   templateUrl: './lists.component.html',
   styleUrl: './lists.component.css'
 })
@@ -25,22 +24,4 @@ export class ListsComponent implements OnInit {
   onAddList(): void {
     this.todoListService.addList(this.listTitle);
   }
-
-  onDeleteList(id: number): void {
-    this.todoListService.deleteList(id);
-  }
-
-  onArchiveList(id: number): void {
-    this.todoListService.archiveList(id);
-  }
-
-  onDeleteTask(listId: number, taskId: number): void {
-    this.todoListService.deleteTask(listId, taskId);
-  }
-
-  onCompleteTask(listId: number, taskId: number): void {
-    this.todoListService.completeTask(listId, taskId);
-  }
-
-
 }

@@ -1,4 +1,22 @@
-<div class="flex items-center">
-    <input id={{`addTask${listId}`}} type="text" pInputText pSize="small" [(ngModel)]="newTaskName" />
-    <i class="pi pi-plus text-2xl" (click)="onAddTask(listId)"></i>
-</div>
+@if (list) {
+    <p-card class="">
+        <ng-template #title>
+            <div class="flex gap-2 items-center">
+                <span>{{ list.archived ? list.title + " (A)" : list.title }}</span>
+                <i class="pi pi-times text-sm" (click)="onDeleteList(list.id)"></i>
+                <i class="pi pi-check text-sm" (click)="onArchiveList(list.id)"></i>
+            </div>
+        </ng-template>
+        @for (task of list.tasks; track task.id) {
+            <div class="flex gap-2 items-center">
+                <span>{{ task.completed ? task.name + " (C)" : task.name }}</span>
+                <i class="pi pi-times text-xs" (click)="onDeleteTask(list.id, task.id)"></i>
+                <i class="pi pi-check text-xs" (click)="onCompleteTask(list.id, task.id)"></i>
+            </div>
+        }
+        <div class="flex items-center">
+            <input id={{`addTask${list.id}`}} type="text" pInputText pSize="small" [(ngModel)]="newTaskName" />
+            <i class="pi pi-plus text-2xl" (click)="onAddTask(list.id)"></i>
+        </div>
+    </p-card>
+}
