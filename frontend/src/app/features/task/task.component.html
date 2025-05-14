@@ -1,0 +1,17 @@
+@if (task !== null && listId !== 0) {
+    <div class="flex gap-2 items-center">
+        <span class="cursor-pointer" (click)="onShowDialog(task.name)">{{ task.completed ? task.name + " (C)" : task.name }}</span>
+        <i class="pi pi-times text-xs cursor-pointer" (click)="onDeleteTask(listId, task.id)"></i>
+        <i class="pi pi-check text-xs cursor-pointer" (click)="onCompleteTask(listId, task.id)"></i>
+    </div>
+    <p-dialog header="Edit task" [modal]="true" [(visible)]="visible">
+        <div class="flex items-center gap-4 mb-4">
+            <label for="taskName" class="font-semibold w-24">Task name</label>
+            <input pInputText id="taskName" class="flex-auto" autocomplete="off" [(ngModel)]="taskName" />
+        </div>
+        <div class="flex justify-end gap-2">
+            <p-button label="Cancel" severity="secondary" (click)="onCancelDialog()" />
+            <p-button label="Save" (click)="onSaveDialog()" />
+        </div>
+    </p-dialog>
+}

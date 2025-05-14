@@ -4,10 +4,13 @@ import { TodoListService } from '../../shared/data-access/todo-list.service';
 import { InputTextModule } from 'primeng/inputtext';
 import { CardModule } from 'primeng/card';
 import { TodoList } from '../../shared/models/todo-list.model';
+import { DialogModule } from 'primeng/dialog';
+import { ButtonModule } from 'primeng/button';
+import { TaskComponent } from '../task/task.component';
 
 @Component({
   selector: 'app-list',
-  imports: [FormsModule, InputTextModule, CardModule],
+  imports: [FormsModule, InputTextModule, CardModule, DialogModule, ButtonModule, TaskComponent],
   templateUrl: './list.component.html',
   styleUrl: './list.component.css'
 })
@@ -15,10 +18,14 @@ export class ListComponent {
   private readonly todoListService = inject(TodoListService);
 
   @Input() list: TodoList | null = null;
-  newTaskName = '';
+
+  taskName = '';
+  listTitle = '';
+  visible = false;
+  editListVisible = false;
 
   onAddTask(listIdParam: number): void {
-    this.todoListService.addTask(listIdParam, this.newTaskName);
+    this.todoListService.addTask(listIdParam, this.taskName);
   }
 
   onDeleteList(id: number): void {
@@ -29,11 +36,33 @@ export class ListComponent {
     this.todoListService.archiveList(id);
   }
 
-  onDeleteTask(listId: number, taskId: number): void {
-    this.todoListService.deleteTask(listId, taskId);
+  onShowDialog(): void {
+    this.taskName = '';
+    this.visible = true;
   }
 
-  onCompleteTask(listId: number, taskId: number): void {
-    this.todoListService.completeTask(listId, taskId);
+  onSaveDialog(listId: number): void {
+    this.todoListService.addTask(listId, this.taskName);
+    this.visible = false;
+  }
+
+  onCancelDialog(): void {
+    this.taskName = '';
+    this.visible = false;
+  }
+
+  onShowEditDialog(listTitle: string): void {
+    this.listTitle = listTitle;
+    this.editListVisible = true;
+  }
+
+  onSaveEditDialog(listId: number): void {
+    this.todoListService.updateList(listId, this.listTitle);
+    this.editListVisible = false;
+  }
+
+  onCancelEditDialog(): void {
+    this.listTitle = '';
+    this.editListVisible = false;
   }
 }

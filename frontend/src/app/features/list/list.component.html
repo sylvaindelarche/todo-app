@@ -2,21 +2,34 @@
     <p-card class="">
         <ng-template #title>
             <div class="flex gap-2 items-center">
-                <span>{{ list.archived ? list.title + " (A)" : list.title }}</span>
-                <i class="pi pi-times text-sm" (click)="onDeleteList(list.id)"></i>
-                <i class="pi pi-check text-sm" (click)="onArchiveList(list.id)"></i>
+                <span class="cursor-pointer" (click)="onShowEditDialog(list.title)">{{ list.archived ? list.title + " (A)" : list.title }}</span>
+                <i class="pi pi-times text-sm cursor-pointer" (click)="onDeleteList(list.id)"></i>
+                <i class="pi pi-check text-sm cursor-pointer" (click)="onArchiveList(list.id)"></i>
+                <i class="pi pi-plus text-2xl ml-auto cursor-pointer" (click)="onShowDialog()"></i>
             </div>
         </ng-template>
         @for (task of list.tasks; track task.id) {
-            <div class="flex gap-2 items-center">
-                <span>{{ task.completed ? task.name + " (C)" : task.name }}</span>
-                <i class="pi pi-times text-xs" (click)="onDeleteTask(list.id, task.id)"></i>
-                <i class="pi pi-check text-xs" (click)="onCompleteTask(list.id, task.id)"></i>
-            </div>
+            <app-task [task]="task" [listId]="list.id"></app-task>
         }
-        <div class="flex items-center">
-            <input id={{`addTask${list.id}`}} type="text" pInputText pSize="small" [(ngModel)]="newTaskName" />
-            <i class="pi pi-plus text-2xl" (click)="onAddTask(list.id)"></i>
-        </div>
     </p-card>
+    <p-dialog header="Create task" [modal]="true" [(visible)]="visible">
+        <div class="flex items-center gap-4 mb-4">
+            <label for="taskName" class="font-semibold w-24">Task name</label>
+            <input pInputText id="taskName" class="flex-auto" autocomplete="off" [(ngModel)]="taskName" />
+        </div>
+        <div class="flex justify-end gap-2">
+            <p-button label="Cancel" severity="secondary" (click)="onCancelDialog()" />
+            <p-button label="Save" (click)="onSaveDialog(list.id)" />
+        </div>
+    </p-dialog>
+    <p-dialog header="Edit list" [modal]="true" [(visible)]="editListVisible">
+        <div class="flex items-center gap-4 mb-4">
+            <label for="editList" class="font-semibold w-24">List title</label>
+            <input pInputText id="editList" class="flex-auto" autocomplete="off" [(ngModel)]="listTitle" />
+        </div>
+        <div class="flex justify-end gap-2">
+            <p-button label="Cancel" severity="secondary" (click)="onCancelEditDialog()" />
+            <p-button label="Save" (click)="onSaveEditDialog(list.id)" />
+        </div>
+    </p-dialog>
 }
