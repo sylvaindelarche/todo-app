@@ -33,8 +33,8 @@ export class TaskComponent {
     this.visible = true;
   }
 
-  onSaveDialog(): void {
-    this.todoListService.updateTask(this.listId, this.task!.id, this.taskName);
+  onSaveDialog(listId: number, taskId: number): void {
+    this.todoListService.updateTask(listId, taskId, this.taskName);
     this.visible = false;
   }
 

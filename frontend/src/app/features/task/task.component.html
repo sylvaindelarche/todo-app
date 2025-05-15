@@ -1,4 +1,4 @@
-@if (task !== null && listId !== 0) {
+@if (task && listId) {
     <div class="flex gap-2 items-center">
         <span class="cursor-pointer" (click)="onShowDialog(task.name)">{{ task.completed ? task.name + " (C)" : task.name }}</span>
         <i class="pi pi-times text-xs cursor-pointer" (click)="onDeleteTask(listId, task.id)"></i>
@@ -11,7 +11,7 @@
         </div>
         <div class="flex justify-end gap-2">
             <p-button label="Cancel" severity="secondary" (click)="onCancelDialog()" />
-            <p-button label="Save" (click)="onSaveDialog()" />
+            <p-button label="Save" (click)="onSaveDialog(listId, task.id)" />
         </div>
     </p-dialog>
 }

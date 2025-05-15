@@ -21,7 +21,7 @@ export class ListComponent {
 
   taskName = '';
   listTitle = '';
-  visible = false;
+  createTaskVisible = false;
   editListVisible = false;
 
   onAddTask(listIdParam: number): void {
@@ -36,19 +36,19 @@ export class ListComponent {
     this.todoListService.archiveList(id);
   }
 
-  onShowDialog(): void {
+  onShowCreateDialog(): void {
     this.taskName = '';
-    this.visible = true;
+    this.createTaskVisible = true;
   }
 
-  onSaveDialog(listId: number): void {
+  onSaveCreateDialog(listId: number): void {
     this.todoListService.addTask(listId, this.taskName);
-    this.visible = false;
+    this.createTaskVisible = false;
   }
 
-  onCancelDialog(): void {
+  onCancelCreateDialog(): void {
     this.taskName = '';
-    this.visible = false;
+    this.createTaskVisible = false;
   }
 
   onShowEditDialog(listTitle: string): void {
