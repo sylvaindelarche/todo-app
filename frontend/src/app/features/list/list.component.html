@@ -2,10 +2,10 @@
     <p-card class="">
         <ng-template #title>
             <div class="flex gap-2 items-center">
-                <span class="cursor-pointer" (click)="onShowEditDialog(list.title)">{{ list.archived ? list.title + " (A)" : list.title }}</span>
-                <i class="pi pi-times text-sm cursor-pointer" (click)="onDeleteList(list.id)"></i>
-                <i class="pi pi-check text-sm cursor-pointer" (click)="onArchiveList(list.id)"></i>
-                <i class="pi pi-plus text-2xl ml-auto cursor-pointer" (click)="onShowCreateDialog()"></i>
+                <span class="hover:bg-gray-200 rounded-sm cursor-pointer" (click)="onShowEditDialog(list.title)">{{ list.archived ? list.title + " (A)" : list.title }}</span>
+                <i class="pi pi-trash text-sm hover:bg-gray-200 rounded-xl cursor-pointer" (click)="onDeleteList(list.id)"></i>
+                <i class="pi pi-check text-sm hover:bg-gray-200 rounded-xl cursor-pointer" (click)="onArchiveList(list.id)"></i>
+                <i class="pi pi-plus text-2xl ml-auto hover:bg-gray-200 rounded-xl cursor-pointer" (click)="onShowCreateDialog()"></i>
             </div>
         </ng-template>
         @for (task of list.tasks; track task.id) {
