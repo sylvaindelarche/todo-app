@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 import { TaskComponent } from './task.component';
 
@@ -8,7 +9,12 @@ describe('TaskComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TaskComponent]
+      imports: [TaskComponent],
+      providers: [
+        provideHttpClient(
+          withInterceptorsFromDi(),
+        ),
+      ]
     })
     .compileComponents();
 

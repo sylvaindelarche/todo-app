@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 import { ListsComponent } from './lists.component';
 
@@ -8,7 +9,12 @@ describe('ListsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ListsComponent]
+      imports: [ListsComponent],
+      providers: [
+        provideHttpClient(
+          withInterceptorsFromDi(),
+        ),
+      ]
     })
     .compileComponents();
 

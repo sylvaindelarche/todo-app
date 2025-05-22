@@ -22,7 +22,11 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: Build
+    - name: Go in frontend folder
+      run: cd frontend
+
+    - name: Build & test
       run: |
         npm install
+        npm run test
         npx webpack
