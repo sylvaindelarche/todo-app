@@ -2,6 +2,7 @@ package me.sylvain.todo.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +16,7 @@ import me.sylvain.todo.persistence.entity.Task;
 import me.sylvain.todo.persistence.entity.TaskDTO;
 import me.sylvain.todo.persistence.repository.TaskRepository;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/tasks")
 public class TaskController {

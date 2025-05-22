@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -21,6 +22,7 @@ import me.sylvain.todo.persistence.entity.TodoListDTO;
 import me.sylvain.todo.persistence.repository.ListRepository;
 import me.sylvain.todo.persistence.repository.TaskRepository;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/lists")
 public class ListController {
@@ -64,7 +66,7 @@ public class ListController {
     @PostMapping("/{id}/archive")
     public ResponseEntity<TodoList> archiveList(@PathVariable Long id) {
         return listRepository.findById(id).map(list -> {
-            list.setActive(list.isActive() ? false : true);
+            list.setArchived(list.isArchived() ? false : true);
             return ResponseEntity.status(HttpStatus.OK).body(listRepository.save(list));
         }).orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }

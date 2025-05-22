@@ -1,81 +1,149 @@
-import { effect, Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { TodoList } from '../models/todo-list.model';
+import { HttpClient } from '@angular/common/http';
+import { catchError, Observable, of, tap } from 'rxjs';
 import { Task } from '../models/task.model';
-
-const TODO_LISTS: TodoList[] = [
-  { id: 1, title: 'List 1', archived: false, tasks: [{id: 1, name: 'Task 1', completed: false}, {id: 2, name: 'Task 2', completed: false}] },
-  { id: 2, title: 'List 2', archived: false, tasks: [{id: 3, name: 'Task 3', completed: false}] },
-  { id: 3, title: 'List 3', archived: false, tasks: [{id: 4, name: 'Task 4', completed: false}, {id: 5, name: 'Task 5', completed: false}, {id: 6, name: 'Task 6', completed: false}] },
-  { id: 4, title: 'List 4', archived: true, tasks: [{id: 7, name: 'Task 7', completed: false}] },
-  { id: 5, title: 'List 5', archived: false, tasks: [{id: 8, name: 'Task 8', completed: false}] },
-  { id: 6, title: 'List 6', archived: false, tasks: [{id: 9, name: 'Task 9', completed: true}] },
-]; // TODO temporary mocking until service handles real backend communication
 
 @Injectable({
   providedIn: 'root'
 })
 export class TodoListService {
+  private readonly http = inject(HttpClient);
+  private readonly path = `http://localhost:8080/`
 
-  constructor() { //TODO remove
-    effect(() => console.log("update"));
-  }
-
-  private readonly _todoLists = signal<TodoList[]>(TODO_LISTS);
+  private readonly _todoLists = signal<TodoList[]>([]);
   public readonly todoLists = this._todoLists.asReadonly();
 
-  private readonly _nextTaskId = signal<number>(6); // TODO temporary fixture until backend is in place
-
-  public getLists(): void {
-    this._todoLists.update(lists => lists);
+  private handleApiErrors(error: Object): void {
+    console.log("Error when calling API:");
+    console.log(error);
   }
 
-  public addList(title: string): void {
+  public getLists(): Observable<TodoList[]> {
+    return this.http.get<TodoList[]>(`${this.path}lists`).pipe(
+      tap((lists) => {
+        this._todoLists.set(lists);
+      }),
+      catchError((error) => {
+        this.handleApiErrors(error);
+        return of([]);
+      })
+    );
+  }
+
+  public addList(title: string): Observable<TodoList | null> {
     const newList = {
-      id: this._todoLists().length + 1,
-      title,
-      archived: false,
-      tasks: []
+      title: title
     };
-    this._todoLists.update(lists => [...lists, newList]);
+    return this.http.post<TodoList>(`${this.path}lists`, newList).pipe(
+      tap((list) => {
+        this._todoLists.update(lists => [...lists, list]);
+      }),
+      catchError((error) => {
+        this.handleApiErrors(error);
+        return of(null);
+      })
+    );
   }
 
-  public deleteList(id: number): void {
-    this._todoLists.update(lists => lists.filter(list => list.id !== id));
+  public deleteList(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.path}lists/${id}`).pipe(
+      tap(() => {
+        this._todoLists.update(lists => lists.filter(list => list.id !== id));
+      }),
+      catchError((error) => {
+        this.handleApiErrors(error);
+        return of();
+      })
+    );
   }
 
-  public updateList(id: number, title: string): void { // TODO currently unused until real backend communication is handled
-    this._todoLists.update(lists => lists.map(list => 
-      list.id === id ? {...list, title: title} : list));
+  public updateList(id: number, title: string): Observable<TodoList | null> {
+    const updatedList = {
+      title: title
+    };
+    return this.http.patch<TodoList>(`${this.path}lists/${id}`, updatedList).pipe(
+      tap((returnedList) => {
+        this._todoLists.update(lists => lists.map(list => list.id === id ? {...list, title: returnedList.title} : list));
+      }),
+      catchError((error) => {
+        this.handleApiErrors(error);
+        return of(null);
+      })
+    );
   }
 
-  public archiveList(id: number): void {
-    this._todoLists.update(lists => lists.map(list => 
-      list.id === id ? {...list, archived: list.archived ? false : true} : list));
+  public archiveList(id: number): Observable<TodoList | null> {
+    return this.http.post<TodoList>(`${this.path}lists/${id}/archive`, {}).pipe(
+      tap((returnedList) => {
+        this._todoLists.update(lists => lists.map(list => list.id === id ? {...list, archived: returnedList.archived} : list));
+      }),
+      catchError((error) => {
+        this.handleApiErrors(error);
+        return of(null);
+      })
+    );
   }
 
-  public addTask(listId: number, name: string): void {
-    this._todoLists.update(lists => lists.map(list =>
-      list.id === listId ? {...list, tasks: [...list.tasks, { id: this._nextTaskId(), name: name, completed: false }]} : list));
-    this._nextTaskId.update(num => num + 1);
+  public addTask(listId: number, name: string): Observable<Task | null> {
+    const newTask = {
+      name: name
+    };
+    return this.http.post<Task>(`${this.path}lists/${listId}/tasks`, newTask).pipe(
+      tap((task) => {
+        this._todoLists.update(lists => lists.map(list => list.id === listId ? {...list, tasks: [...list.tasks, task]} : list));
+      }),
+      catchError((error) => {
+        this.handleApiErrors(error);
+        return of(null);
+      })
+    );
   }
 
-  public updateTask(listId: number, taskId: number, name: string): void { // TODO currently unused until real backend communication is handled
-    this._todoLists.update(lists => lists.map(list =>
-      list.id === listId ? {...list, tasks: list.tasks.map(task => 
-        task.id === taskId ? {...task, name: name} : task
-      )} : list));
+  public updateTask(listId: number, taskId: number, name: string): Observable<Task | null> {
+    const updatedTask = {
+      name: name
+    };
+    return this.http.patch<Task>(`${this.path}tasks/${taskId}`, updatedTask).pipe(
+      tap((returnedTask) => {
+        this._todoLists.update(lists => lists.map(list =>
+          list.id === listId ? {...list, tasks: list.tasks.map(task => 
+            task.id === taskId ? {...task, name: returnedTask.name} : task
+          )} : list));
+      }),
+      catchError((error) => {
+        this.handleApiErrors(error);
+        return of(null);
+      })
+    );
   }
 
-  public deleteTask(listId: number, taskId: number): void {
-    this._todoLists.update(lists => lists.map(list =>
-      list.id === listId ? {...list, tasks: list.tasks.filter(list => list.id !== taskId)}: list
-    ));
+  public deleteTask(listId: number, taskId: number): Observable<void> {
+    return this.http.delete<void>(`${this.path}tasks/${taskId}`).pipe(
+      tap(() => {
+        this._todoLists.update(lists => lists.map(list =>
+          list.id === listId ? {...list, tasks: list.tasks.filter(task => task.id !== taskId)}: list
+        ));
+      }),
+      catchError((error) => {
+        this.handleApiErrors(error);
+        return of();
+      })
+    );
   }
 
-  public completeTask(listId: number, taskId: number): void {
-    this._todoLists.update(lists => lists.map(list =>
-      list.id === listId ? {...list, tasks: list.tasks.map(task => 
-        task.id === taskId ? {...task, completed: task.completed ? false : true} : task
-      )} : list));
+  public completeTask(listId: number, taskId: number): Observable<Task | null> {
+    return this.http.post<Task>(`${this.path}tasks/${taskId}/complete`, {}).pipe(
+      tap((returnedTask) => {
+        this._todoLists.update(lists => lists.map(list =>
+          list.id === listId ? {...list, tasks: list.tasks.map(task => 
+            task.id === taskId ? {...task, completed: returnedTask.completed} : task
+          )} : list));
+      }),
+      catchError((error) => {
+        this.handleApiErrors(error);
+        return of(null);
+      })
+    );
   }
 }

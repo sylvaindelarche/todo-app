@@ -21,11 +21,11 @@ export class TaskComponent {
   visible = false;
 
   onDeleteTask(listId: number, taskId: number): void {
-    this.todoListService.deleteTask(listId, taskId);
+    this.todoListService.deleteTask(listId, taskId).subscribe();
   }
 
   onCompleteTask(listId: number, taskId: number): void {
-    this.todoListService.completeTask(listId, taskId);
+    this.todoListService.completeTask(listId, taskId).subscribe();
   }
 
   onShowDialog(taskName: string): void {
@@ -34,7 +34,7 @@ export class TaskComponent {
   }
 
   onSaveDialog(listId: number, taskId: number): void {
-    this.todoListService.updateTask(listId, taskId, this.taskName);
+    this.todoListService.updateTask(listId, taskId, this.taskName).subscribe();
     this.visible = false;
   }
 

@@ -29,11 +29,11 @@ export class ListComponent {
   }
 
   onDeleteList(id: number): void {
-    this.todoListService.deleteList(id);
+    this.todoListService.deleteList(id).subscribe();
   }
 
   onArchiveList(id: number): void {
-    this.todoListService.archiveList(id);
+    this.todoListService.archiveList(id).subscribe();
   }
 
   onShowCreateDialog(): void {
@@ -42,7 +42,7 @@ export class ListComponent {
   }
 
   onSaveCreateDialog(listId: number): void {
-    this.todoListService.addTask(listId, this.taskName);
+    this.todoListService.addTask(listId, this.taskName).subscribe();
     this.createTaskVisible = false;
   }
 
@@ -57,7 +57,7 @@ export class ListComponent {
   }
 
   onSaveEditDialog(listId: number): void {
-    this.todoListService.updateList(listId, this.listTitle);
+    this.todoListService.updateList(listId, this.listTitle).subscribe();
     this.editListVisible = false;
   }
 

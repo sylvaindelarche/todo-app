@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, effect, inject, OnInit } from '@angular/core';
 import { TodoListService } from '../../shared/data-access/todo-list.service';
 import { FormsModule } from '@angular/forms';
 import { ListComponent } from '../list/list.component';
@@ -21,7 +21,7 @@ export class ListsComponent implements OnInit {
   visible = false;
 
   ngOnInit(): void {
-      this.todoListService.getLists();
+      this.todoListService.getLists().subscribe();
   }
 
   onShowDialog(): void {
@@ -30,7 +30,7 @@ export class ListsComponent implements OnInit {
   }
 
   onSaveDialog(): void {
-    this.todoListService.addList(this.listTitle);
+    this.todoListService.addList(this.listTitle).subscribe();
     this.visible = false;
   }
 

@@ -99,7 +99,7 @@ paths:
                       type: integer
                     title:
                       type: string
-                    active:
+                    archived:
                       type: boolean
                     tasks:
                       type: array

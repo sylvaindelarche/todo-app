@@ -31,7 +31,7 @@ public class TodoList {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
     private String title;
-    private boolean active;
+    private boolean archived;
     
     @ManyToOne
     @JoinColumn(name = "account_id")
