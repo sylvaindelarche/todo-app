@@ -72,7 +72,7 @@ public class ListController {
     }
 
     @PostMapping("/{id}/tasks")
-    public ResponseEntity<Task> createTask(@PathVariable Long id, @Valid @RequestBody TaskDTO taskDTO) {
+    public ResponseEntity<Task> addTask(@PathVariable Long id, @Valid @RequestBody TaskDTO taskDTO) {
 
         Task task = new Task();
         if (taskDTO.getName() != null) task.setName(taskDTO.getName());

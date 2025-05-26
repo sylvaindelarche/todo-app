@@ -44,7 +44,7 @@ public class TaskController {
     }
     
     @PostMapping("/{id}/complete")
-    public ResponseEntity<Task> completeList(@PathVariable Long id) {
+    public ResponseEntity<Task> completeTask(@PathVariable Long id) {
         return taskRepository.findById(id).map(task -> {
             task.setCompleted(task.isCompleted() ? false : true);
             return ResponseEntity.status(HttpStatus.OK).body(taskRepository.save(task));
