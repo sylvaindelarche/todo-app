@@ -1,5 +1,6 @@
 package me.sylvain.todo.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -38,6 +39,8 @@ public class ListController {
     public ResponseEntity<TodoList> createList(@Valid @RequestBody TodoListDTO listDTO) {
         TodoList list = new TodoList();
         if (listDTO.getTitle() != null) list.setTitle(listDTO.getTitle());
+        list.setArchived(false);
+        list.setTasks(new ArrayList<>());
         return ResponseEntity.status(HttpStatus.OK).body(listRepository.save(list));
     }
     
@@ -76,6 +79,7 @@ public class ListController {
 
         Task task = new Task();
         if (taskDTO.getName() != null) task.setName(taskDTO.getName());
+        task.setCompleted(false);
 
         TodoList list = listRepository.findById(id).orElse(null);
         if (list == null) {
