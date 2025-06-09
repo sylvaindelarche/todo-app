@@ -3,13 +3,14 @@ import { TodoList } from '../models/todo-list.model';
 import { HttpClient } from '@angular/common/http';
 import { catchError, Observable, of, tap } from 'rxjs';
 import { Task } from '../models/task.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TodoListService {
   private readonly http = inject(HttpClient);
-  private readonly path = `http://localhost:8080/`
+  private readonly path = environment.apiUrl;
 
   private readonly _todoLists = signal<TodoList[]>([]);
   public readonly todoLists = this._todoLists.asReadonly();
@@ -107,7 +108,7 @@ export class TodoListService {
     return this.http.patch<Task>(`${this.path}tasks/${taskId}`, updatedTask).pipe(
       tap((returnedTask) => {
         this._todoLists.update(lists => lists.map(list =>
-          list.id === listId ? {...list, tasks: list.tasks.map(task => 
+          list.id === listId ? {...list, tasks: list.tasks.map(task =>
             task.id === taskId ? {...task, name: returnedTask.name} : task
           )} : list));
       }),
@@ -136,7 +137,7 @@ export class TodoListService {
     return this.http.post<Task>(`${this.path}tasks/${taskId}/complete`, {}).pipe(
       tap((returnedTask) => {
         this._todoLists.update(lists => lists.map(list =>
-          list.id === listId ? {...list, tasks: list.tasks.map(task => 
+          list.id === listId ? {...list, tasks: list.tasks.map(task =>
             task.id === taskId ? {...task, completed: returnedTask.completed} : task
           )} : list));
       }),

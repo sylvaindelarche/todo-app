@@ -1,0 +1,38 @@
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: postgres # unsecure
+    networks:
+      - app-network
+
+  backend:
+    restart: always
+    build:
+      context: ./backend/
+      dockerfile: Dockerfile.backend
+    depends_on:
+      - db
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/
+      DB_USER: postgres
+      DB_PASSWORD: postgres # unsecure
+    networks:
+      - app-network
+
+  frontend:
+    restart: always
+    build:
+      context: ./frontend/
+      dockerfile: Dockerfile.frontend
+    depends_on:
+      - backend
+    ports:
+      - "1337:80"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
