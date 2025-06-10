@@ -4,6 +4,8 @@ services:
     restart: always
     environment:
       POSTGRES_PASSWORD: postgres # unsecure
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
     networks:
       - app-network
 
@@ -36,3 +38,6 @@ services:
 networks:
   app-network:
     driver: bridge
+
+volumes:
+  postgres_data:
