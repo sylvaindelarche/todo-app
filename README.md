@@ -5,6 +5,7 @@ This is a simple Todo app that allows the user to manage a list of tasks. It's a
 Ceci est une application Todo simple qui permet à l'utilisateur de gérer une liste de tâches. C’est un projet personnel où je peux pratiquer divers concepts techniques, comme le CI/CD et les tests à plusieurs niveaux.
 
 ---
+
 # Project information
 
 ## Tech Stack (in its current form):
@@ -19,7 +20,6 @@ Ceci est une application Todo simple qui permet à l'utilisateur de gérer une l
 - PostgreSQL (as docker image)
 - GitHub Actions (CI/CD)
 
-
 ## Build project
 
 ### Backend
@@ -31,6 +31,8 @@ Ceci est une application Todo simple qui permet à l'utilisateur de gérer une l
 ### Frontend
 
 *Requires node, npm and Angular CLI (see angular.dev)* 
+
+`npm ci`
 
 `npm run build`
 
@@ -46,7 +48,7 @@ Start Spring application (port 8080)
 
 Start Angular application (port 4200)
 
-`ng serve`
+`npm run start`
 
 ## Production mode
 
