@@ -17,10 +17,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -28,6 +29,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import me.sylvain.todo.controller.ListController;
 import me.sylvain.todo.controller.TaskController;
+import me.sylvain.todo.messaging.RabbitPublisher;
 import me.sylvain.todo.persistence.entity.Task;
 import me.sylvain.todo.persistence.entity.TaskDTO;
 import me.sylvain.todo.persistence.entity.TodoList;
@@ -36,7 +38,7 @@ import me.sylvain.todo.persistence.repository.ListRepository;
 import me.sylvain.todo.persistence.repository.TaskRepository;
 
 @WebMvcTest({ListController.class, TaskController.class})
-@TestPropertySource(properties = "spring.datasource.url=jdbc:h2:mem:testdb")
+@ActiveProfiles("test")
 class TodoListControllersTest {
     final Task task = Task.builder()
     .id(1L)
@@ -108,7 +110,15 @@ class TodoListControllersTest {
     @MockitoBean
     private TaskRepository taskRepository;
 
+    @MockitoBean
+    private RabbitPublisher rabbitPublisher;
+
     private ObjectMapper mapper = new ObjectMapper();
+
+    @BeforeEach
+    public void beforeEach() {
+        doNothing().when(rabbitPublisher).publish(any());
+    }
 
     @Test
     void testGetAllListsReturnsEmptyJsonArray() throws Exception {

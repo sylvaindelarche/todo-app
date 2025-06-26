@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
+import me.sylvain.todo.messaging.RabbitPublisher;
 import me.sylvain.todo.persistence.entity.Task;
 import me.sylvain.todo.persistence.entity.TaskDTO;
 import me.sylvain.todo.persistence.entity.TodoList;
@@ -29,14 +30,17 @@ import me.sylvain.todo.persistence.repository.TaskRepository;
 public class ListController {
     private final ListRepository listRepository;
     private final TaskRepository taskRepository;
+    private final RabbitPublisher rabbitPublisher;
 
-    public ListController(ListRepository listRepository, TaskRepository taskRepository) {
+    public ListController(ListRepository listRepository, TaskRepository taskRepository, RabbitPublisher rabbitPublisher) {
         this.taskRepository = taskRepository;
         this.listRepository = listRepository;
+        this.rabbitPublisher = rabbitPublisher;
     }
     
     @PostMapping
     public ResponseEntity<TodoList> createList(@Valid @RequestBody TodoListDTO listDTO) {
+        rabbitPublisher.publish("Created list " + listDTO.getTitle());
         TodoList list = new TodoList();
         if (listDTO.getTitle() != null) list.setTitle(listDTO.getTitle());
         list.setArchived(false);

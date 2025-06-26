@@ -11,6 +11,9 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+  docker:
+    compose:
+      file: "./dev/compose.yaml"
 server:
   error:
     includeStacktrace: NEVER

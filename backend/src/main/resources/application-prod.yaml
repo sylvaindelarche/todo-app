@@ -11,6 +11,10 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: false
+  rabbitmq:
+    host: rabbitmq
+    username: ${RABBITMQ_DEFAULT_USER}
+    password: ${RABBITMQ_DEFAULT_PASS}
 server:
   error:
     includeStacktrace: NEVER

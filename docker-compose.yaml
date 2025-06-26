@@ -8,6 +8,16 @@ services:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - app-network
+   
+  rabbitmq:
+    image: 'rabbitmq:latest'
+    environment:
+      RABBITMQ_DEFAULT_PASS: secret # unsecure
+      RABBITMQ_DEFAULT_USER: myuser
+    ports:
+      - '5672'
+    networks:
+      - app-network
 
   backend:
     restart: always
@@ -16,10 +26,13 @@ services:
       dockerfile: Dockerfile.backend
     depends_on:
       - db
+      - rabbitmq
     environment:
       DB_URL: jdbc:postgresql://db:5432/
       DB_USER: postgres
       DB_PASSWORD: postgres # unsecure
+      RABBITMQ_DEFAULT_PASS: secret # unsecure
+      RABBITMQ_DEFAULT_USER: myuser
     networks:
       - app-network
 
