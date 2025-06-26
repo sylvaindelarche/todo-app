@@ -18,6 +18,7 @@ Ceci est une application Todo simple qui permet à l'utilisateur de gérer une l
 - Docker
 - Nginx (as docker image)
 - PostgreSQL (as docker image)
+- RabbitMQ (as docker image)
 - GitHub Actions (CI/CD)
 
 ## Build project
@@ -27,6 +28,10 @@ Ceci est une application Todo simple qui permet à l'utilisateur de gérer une l
 *Requires Java 17 and Maven*
 
 `mvn clean package`
+
+or
+
+`mvn clean package -Pprod` (to prepare for production mode)
 
 ### Frontend
 
@@ -42,7 +47,7 @@ Ceci est une application Todo simple qui permet à l'utilisateur de gérer une l
 
 Start Spring application (port 8080)
 
-`mvn spring-boot:run "-Dspring-boot.run.profiles=dev"`
+`mvn spring-boot:run`
 
 ### Frontend
 
