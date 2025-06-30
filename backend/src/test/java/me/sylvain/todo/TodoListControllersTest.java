@@ -64,28 +64,24 @@ class TodoListControllersTest {
         .id(1L)
         .title("Groceries")
         .archived(false)
-        .account(null)
         .tasks(null)
         .build();
     final TodoList updatedList = TodoList.builder()
         .id(1L)
         .title("Website")
         .archived(false)
-        .account(null)
         .tasks(null)
         .build();
     final TodoList archivedList = TodoList.builder()
         .id(1L)
         .title("Groceries")
         .archived(true)
-        .account(null)
         .tasks(null)
         .build();
     final TodoList listWithTask = TodoList.builder()
         .id(1L)
         .title("Groceries")
         .archived(false)
-        .account(null)
         .tasks(new ArrayList<>(Arrays.asList(task)))
         .build();
     final TodoListDTO todoListDTO = TodoListDTO.builder()
