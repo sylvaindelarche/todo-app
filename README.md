@@ -25,7 +25,7 @@ Ceci est une application Todo simple qui permet à l'utilisateur de gérer une l
 
 ### Backend
 
-*Requires Java 17 and Maven*
+*Requires Java 17 and Maven.*
 
 `mvn clean package`
 
@@ -35,34 +35,36 @@ or
 
 ### Frontend
 
-*Requires node, npm and Angular CLI (see angular.dev)* 
+*Requires node, npm and Angular CLI (see angular.dev).* 
 
 `npm ci`
 
-`npm run build`
+or
 
-## Developpement mode
+`npm run build` (to prepare for production mode)
+
+## Development mode
 
 ### Backend
 
-Start Spring application (port 8080)
+Start Spring application (port 8080):
 
 `mvn spring-boot:run`
 
 ### Frontend
 
-Start Angular application (port 4200)
+Start Angular application (port 4200):
 
 `npm run start`
 
 ## Production mode
 
-*Requires Docker* 
+*Requires Docker.* 
 
-In project root
+In project root:
 
 `docker compose up -d`
 
-The applicaton should be running on port 1337, this can be changed in docker-compose.yaml
+The applicaton should be running on port 1337, this can be changed in the docker-compose.yaml.
 
-*It should work without Docker but instructions won't be provided here*
+*It should work without Docker but this requires manual setup of the different components.*
