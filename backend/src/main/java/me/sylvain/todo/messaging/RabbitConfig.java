@@ -10,12 +10,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class RabbitConfig {
     static final String EXCHANGE_NAME = "app-exchange";
-    static final String QUEUE_NAME = "queue.db";
-
-    @Bean
-    Queue queue() {
-        return new Queue(QUEUE_NAME, false);
-    }
+    static final String DB_QUEUE_NAME = "queue.db";
+    static final String CACHE_QUEUE_NAME = "queue.cache";
 
     @Bean
     FanoutExchange exchange() {
@@ -23,7 +19,22 @@ public class RabbitConfig {
     }
 
     @Bean
-    Binding binding(Queue queue, FanoutExchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange);
+    Queue dbQueue() {
+        return new Queue(DB_QUEUE_NAME, false);
+    }
+
+    @Bean
+    Queue cacheQueue() {
+        return new Queue(CACHE_QUEUE_NAME, false);
+    }
+
+    @Bean
+    Binding binding1(Queue dbQueue, FanoutExchange exchange) {
+        return BindingBuilder.bind(dbQueue).to(exchange);
+    }
+
+    @Bean
+    Binding binding2(Queue cacheQueue, FanoutExchange exchange) {
+        return BindingBuilder.bind(cacheQueue).to(exchange);
     }
 }
