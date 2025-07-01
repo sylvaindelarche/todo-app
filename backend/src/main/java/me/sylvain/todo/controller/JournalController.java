@@ -17,7 +17,7 @@ import me.sylvain.todo.persistence.repository.JournalRepository;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/journal")
+@RequestMapping("/journals")
 public class JournalController {
     private final JournalRepository journalRepository;
     
