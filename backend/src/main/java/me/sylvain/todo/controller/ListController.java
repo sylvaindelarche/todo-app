@@ -40,12 +40,13 @@ public class ListController {
     
     @PostMapping
     public ResponseEntity<TodoList> createList(@Valid @RequestBody TodoListDTO listDTO) {
-        rabbitPublisher.publish("Created list " + listDTO.getTitle());
         TodoList list = new TodoList();
         if (listDTO.getTitle() != null) list.setTitle(listDTO.getTitle());
         list.setArchived(false);
         list.setTasks(new ArrayList<>());
-        return ResponseEntity.status(HttpStatus.OK).body(listRepository.save(list));
+        TodoList createdList = listRepository.save(list);
+        rabbitPublisher.publish("Created list " + createdList.getTitle());
+        return ResponseEntity.status(HttpStatus.OK).body(createdList);
     }
     
     @PatchMapping("/{id}")
