@@ -1,0 +1,40 @@
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - 5672:5672
+      - 15672:15672
+    networks:
+      - dev-network
+
+  db:
+    image: postgres
+    ports:
+      - 5432:5432
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: postgres # unsecure
+    volumes:
+      - dev_postgres_data:/var/lib/postgresql/data
+    networks:
+      - dev-network
+
+  spark:
+    image: apache/spark
+    environment:
+      - SPARK_MODE=master
+    ports:
+      - "8085:8080"   # Spark Master Web UI
+      - "7077:7077"   # Spark Master Port
+    command:
+      - "/opt/spark/bin/spark-class"
+      - "org.apache.spark.deploy.master.Master"
+    networks:
+      - dev-network
+
+networks:
+  dev-network:
+    driver: bridge
+
+volumes:
+  dev_postgres_data:
