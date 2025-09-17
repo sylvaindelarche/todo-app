@@ -13,7 +13,7 @@ spring:
     show-sql: true
   docker:
     compose:
-      file: "./dev/compose.yaml"
+      file: "./dev/docker-compose.yaml"
 server:
   error:
     includeStacktrace: NEVER
