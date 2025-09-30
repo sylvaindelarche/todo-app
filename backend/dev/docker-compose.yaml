@@ -4,6 +4,7 @@ services:
     ports:
       - 5672:5672
       - 15672:15672
+    restart: always
     networks:
       - dev-network
 
@@ -19,16 +20,24 @@ services:
     networks:
       - dev-network
 
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8086:8080
+    networks:
+      - dev-network
+
   spark:
-    image: apache/spark
+    image: sylra/spark-wordcount-cron:0.0.1
     environment:
       - SPARK_MODE=master
     ports:
       - "8085:8080"   # Spark Master Web UI
       - "7077:7077"   # Spark Master Port
-    command:
-      - "/opt/spark/bin/spark-class"
-      - "org.apache.spark.deploy.master.Master"
+    restart: always
+    command: >
+      sh -c "echo '*/1 * * * * /opt/spark/work-dir/run-wordcount.sh >> /var/log/cron.log 2>&1' | crontab - && cron && /opt/spark/bin/spark-class org.apache.spark.deploy.master.Master"
     networks:
       - dev-network
 
