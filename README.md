@@ -19,6 +19,7 @@ Ceci est une application Todo simple qui permet à l'utilisateur de gérer une l
 - Nginx (as docker image)
 - PostgreSQL (as docker image)
 - RabbitMQ (as docker image)
+- Spark (as docker image)
 - GitHub Actions (CI/CD)
 
 ## Build project
@@ -46,6 +47,8 @@ or
 ## Development mode
 
 ### Backend
+
+*Requires Docker*
 
 Start Spring application (port 8080):
 

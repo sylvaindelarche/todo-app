@@ -29,7 +29,9 @@ services:
       - dev-network
 
   spark:
-    image: sylra/spark-wordcount-cron:0.0.1
+    build:
+      context: ../../misc/app_docker_images/spark_unique_words
+      dockerfile: ./Dockerfile
     environment:
       - SPARK_MODE=master
     ports:

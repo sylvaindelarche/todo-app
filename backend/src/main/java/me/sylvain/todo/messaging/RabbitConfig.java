@@ -12,6 +12,7 @@ public class RabbitConfig {
     static final String EXCHANGE_NAME = "app-exchange";
     static final String DB_QUEUE_NAME = "queue.db";
     static final String CACHE_QUEUE_NAME = "queue.cache";
+    static final String UNIQUE_WORDS_QUEUE_NAME = "queue.unique_words";
 
     @Bean
     FanoutExchange exchange() {
@@ -29,6 +30,11 @@ public class RabbitConfig {
     }
 
     @Bean
+    Queue uniqueWordsQueue() {
+        return new Queue(UNIQUE_WORDS_QUEUE_NAME, false);
+    }
+
+    @Bean
     Binding binding1(Queue dbQueue, FanoutExchange exchange) {
         return BindingBuilder.bind(dbQueue).to(exchange);
     }
@@ -36,5 +42,10 @@ public class RabbitConfig {
     @Bean
     Binding binding2(Queue cacheQueue, FanoutExchange exchange) {
         return BindingBuilder.bind(cacheQueue).to(exchange);
+    }
+
+    @Bean
+    Binding binding3(Queue uniqueWordsQueue, FanoutExchange exchange) {
+        return BindingBuilder.bind(uniqueWordsQueue).to(exchange);
     }
 }
