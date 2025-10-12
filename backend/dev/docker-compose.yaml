@@ -3,7 +3,7 @@ services:
     image: rabbitmq:3-management
     ports:
       - 5672:5672
-      - 15672:15672
+      - 15672:15672 # UI
     restart: always
     networks:
       - dev-network
@@ -24,7 +24,7 @@ services:
     image: adminer
     restart: always
     ports:
-      - 8086:8080
+      - 8086:8080 # UI
     networks:
       - dev-network
 
@@ -35,13 +35,34 @@ services:
     environment:
       - SPARK_MODE=master
     ports:
-      - "8085:8080"   # Spark Master Web UI
-      - "7077:7077"   # Spark Master Port
+      - "8085:8080" # UI
+      - "7077:7077"
     restart: always
     command: >
       sh -c "echo '*/1 * * * * /opt/spark/work-dir/run-wordcount.sh >> /var/log/cron.log 2>&1' | crontab - && cron && /opt/spark/bin/spark-class org.apache.spark.deploy.master.Master"
     networks:
       - dev-network
+    depends_on:
+      - rabbitmq
+      - db
+
+  prometheus:
+    build:
+      context: ../../misc/app_docker_images/prometheus_app_metrics
+      dockerfile: ./Dockerfile
+    ports:
+      - "9090:9090" # UI
+    restart: always
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    entrypoint: ["sh", "-c"]
+    command: >
+      "sed -i 's|###PLACEHOLDER###|host.docker.internal:8080|g' /etc/prometheus/prometheus.yml &&
+      /bin/prometheus --config.file=/etc/prometheus/prometheus.yml --storage.tsdb.path=/prometheus"
+    networks:
+      - dev-network
+    depends_on:
+      - spark
 
 networks:
   dev-network:

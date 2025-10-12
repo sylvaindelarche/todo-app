@@ -2,6 +2,7 @@ package me.sylvain.todo.messaging;
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.core.Queue;
 import org.springframework.context.annotation.Bean;
@@ -10,13 +11,18 @@ import org.springframework.stereotype.Component;
 @Component
 public class RabbitConfig {
     static final String EXCHANGE_NAME = "app-exchange";
+    static final String METRICS_EXCHANGE = "metrics-exchange";
     static final String DB_QUEUE_NAME = "queue.db";
     static final String CACHE_QUEUE_NAME = "queue.cache";
     static final String UNIQUE_WORDS_QUEUE_NAME = "queue.unique_words";
 
     @Bean
-    FanoutExchange exchange() {
+    FanoutExchange fanoutExchange() {
         return new FanoutExchange(EXCHANGE_NAME);
+    }
+    @Bean
+    DirectExchange directExchange() {
+        return new DirectExchange(METRICS_EXCHANGE);
     }
 
     @Bean
@@ -45,7 +51,7 @@ public class RabbitConfig {
     }
 
     @Bean
-    Binding binding3(Queue uniqueWordsQueue, FanoutExchange exchange) {
-        return BindingBuilder.bind(uniqueWordsQueue).to(exchange);
+    Binding binding3(Queue uniqueWordsQueue, DirectExchange exchange) {
+        return BindingBuilder.bind(uniqueWordsQueue).to(exchange).with("metrics");
     }
 }
