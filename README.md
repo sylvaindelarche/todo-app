@@ -20,7 +20,8 @@ Ceci est une application Todo simple qui permet à l'utilisateur de gérer une l
 - PostgreSQL (as docker image)
 - RabbitMQ (as docker image)
 - Spark (as docker image)
-- GitHub Actions (CI/CD)
+- Prometheus (as docker image)
+- GitHub Actions (for minimal CI/CD)
 
 ## Build project
 
@@ -69,5 +70,3 @@ In project root:
 `docker compose up -d`
 
 The applicaton should be running on port 1337, this can be changed in the docker-compose.yaml.
-
-*It should work without Docker but this requires manual setup of the different components.*
