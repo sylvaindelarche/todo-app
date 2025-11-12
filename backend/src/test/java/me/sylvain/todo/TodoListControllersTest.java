@@ -41,25 +41,25 @@ import me.sylvain.todo.persistence.repository.TaskRepository;
 @ActiveProfiles("test")
 class TodoListControllersTest {
     final Task task = Task.builder()
-    .id(1L)
-    .name("Eggs")
-    .completed(false)
-    .build();
+        .id(1L)
+        .name("Eggs")
+        .completed(false)
+        .build();
     final Task updatedTask = Task.builder()
-    .id(1L)
-    .name("Milk")
-    .completed(false)
-    .build();
+        .id(1L)
+        .name("Milk")
+        .completed(false)
+        .build();
     final Task completedTask = Task.builder()
-    .id(1L)
-    .name("Eggs")
-    .completed(true)
-    .build();
+        .id(1L)
+        .name("Eggs")
+        .completed(true)
+        .build();
     final Task secondTask = Task.builder()
-    .id(1L)
-    .name("Eggs")
-    .completed(false)
-    .build();
+        .id(1L)
+        .name("Eggs")
+        .completed(false)
+        .build();
     final TodoList todoList = TodoList.builder()
         .id(1L)
         .title("Groceries")
