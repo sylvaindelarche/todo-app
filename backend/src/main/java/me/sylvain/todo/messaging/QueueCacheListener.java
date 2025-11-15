@@ -6,20 +6,20 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import me.sylvain.todo.persistence.cache.JournalCache;
 import me.sylvain.todo.persistence.entity.Journal;
+import me.sylvain.todo.shared.LatestJournalEntries;
 
 @Component
 public class QueueCacheListener {
 
 	@Autowired
-	private JournalCache journalCache;
+	private LatestJournalEntries latestJournalEntries;
 
 	@RabbitListener(queues = RabbitConfig.CACHE_QUEUE_NAME)
 	public void receiveMessage(String content) {
 		Journal journal = new Journal();
 		journal.setHtml(content);
 		journal.setCreatedAt(LocalDateTime.now());
-		journalCache.addEntry(journal);
+		latestJournalEntries.addEntry(journal);
 	}
 }

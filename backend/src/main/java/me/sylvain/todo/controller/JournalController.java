@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import me.sylvain.todo.persistence.cache.JournalCache;
 import me.sylvain.todo.persistence.entity.Journal;
 import me.sylvain.todo.persistence.repository.JournalRepository;
+import me.sylvain.todo.shared.LatestJournalEntries;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -22,7 +22,7 @@ public class JournalController {
     private final JournalRepository journalRepository;
     
     @Autowired
-    private JournalCache journalCache;
+    private LatestJournalEntries latestJournalEntries;
 
     public JournalController(JournalRepository journalRepository) {
         this.journalRepository = journalRepository;
@@ -31,14 +31,14 @@ public class JournalController {
     @GetMapping
     public ResponseEntity<List<Journal>> getAllEntries() {
         List<Journal> allJournals = new ArrayList<>(journalRepository.findAll());
-        journalCache.clearCache();
+        latestJournalEntries.clearList();
         return ResponseEntity.status(HttpStatus.OK).body(allJournals);
     }
 
     @GetMapping("/latest")
     public ResponseEntity<List<Journal>> getLatestEntries() {
-        List<Journal> latestJournals = new ArrayList<>(journalCache.getCache());
-        journalCache.clearCache();
+        List<Journal> latestJournals = new ArrayList<>(latestJournalEntries.getList());
+        latestJournalEntries.clearList();
         return ResponseEntity.status(HttpStatus.OK).body(latestJournals);
     }
 }

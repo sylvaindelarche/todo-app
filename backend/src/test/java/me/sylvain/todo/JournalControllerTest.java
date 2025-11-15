@@ -20,9 +20,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import me.sylvain.todo.controller.JournalController;
-import me.sylvain.todo.persistence.cache.JournalCache;
 import me.sylvain.todo.persistence.entity.Journal;
 import me.sylvain.todo.persistence.repository.JournalRepository;
+import me.sylvain.todo.shared.LatestJournalEntries;
 
 @WebMvcTest({JournalController.class})
 @ActiveProfiles("test")
@@ -36,13 +36,13 @@ class JournalControllerTest {
     private JournalRepository journalRepository;
 
     @MockitoBean
-    private JournalCache journalCache;
+    private LatestJournalEntries latestJournalEntries;
 
     private ObjectMapper mapper = new ObjectMapper();
 
     @BeforeEach
     public void beforeEach() {
-        doNothing().when(journalCache).clearCache();
+        doNothing().when(latestJournalEntries).clearList();
     }
 
     @Test
@@ -55,7 +55,7 @@ class JournalControllerTest {
 
     @Test
     void testGetLatestEntries() throws Exception {
-        when(journalCache.getCache()).thenReturn(Collections.singletonList(journal));
+        when(latestJournalEntries.getList()).thenReturn(Collections.singletonList(journal));
         this.mockMvc.perform(get("/journals/latest"))
             .andExpect(status().isOk())
             .andExpect(content().string(containsString(mapper.writeValueAsString(journal))));
