@@ -1,6 +1,6 @@
 services:
   db:
-    image: postgres
+    image: postgres:17.7-alpine
     restart: always
     environment:
       POSTGRES_PASSWORD: postgres # unsecure
@@ -10,7 +10,7 @@ services:
       - app-network
    
   rabbitmq:
-    image: 'rabbitmq:latest'
+    image: 'rabbitmq:3-alpine'
     environment:
       RABBITMQ_DEFAULT_PASS: secret # unsecure
       RABBITMQ_DEFAULT_USER: myuser

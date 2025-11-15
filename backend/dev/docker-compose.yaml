@@ -9,7 +9,7 @@ services:
       - dev-network
 
   db:
-    image: postgres
+    image: postgres:17.7-alpine
     ports:
       - 5432:5432
     restart: always
@@ -21,7 +21,7 @@ services:
       - dev-network
 
   adminer:
-    image: adminer
+    image: adminer:5.4.1
     restart: always
     ports:
       - 8086:8080 # UI
