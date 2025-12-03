@@ -1,7 +1,11 @@
-FROM eclipse-temurin:17-jdk
+FROM maven:4.0.0-rc-5-amazoncorretto-17-al2023 AS build
+WORKDIR /app
+COPY . .
+RUN mvn clean package -Pprod
 
-COPY target/*.jar app.jar
+FROM amazoncorretto:17-al2023
 
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
 ENV SPRING_PROFILES_ACTIVE=prod
-
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+CMD ["java", "-jar", "app.jar"]
