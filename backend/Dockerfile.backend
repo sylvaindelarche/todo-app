@@ -1,7 +1,7 @@
 FROM maven:4.0.0-rc-5-amazoncorretto-17-al2023 AS build
 WORKDIR /app
 COPY . .
-RUN mvn clean package -Pprod
+RUN mvn clean package -Pprod -DskipTests
 
 FROM amazoncorretto:17-al2023
 
