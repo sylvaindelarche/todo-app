@@ -22,7 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import me.sylvain.todo.controller.JournalController;
 import me.sylvain.todo.persistence.entity.Journal;
 import me.sylvain.todo.persistence.repository.JournalRepository;
-import me.sylvain.todo.shared.LatestJournalEntries;
+import me.sylvain.todo.shared.JournalEntries;
 
 @WebMvcTest({JournalController.class})
 @ActiveProfiles("test")
@@ -36,7 +36,7 @@ class JournalControllerTest {
     private JournalRepository journalRepository;
 
     @MockitoBean
-    private LatestJournalEntries latestJournalEntries;
+    private JournalEntries latestJournalEntries;
 
     private ObjectMapper mapper = new ObjectMapper();
 

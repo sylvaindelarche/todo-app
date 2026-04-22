@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import me.sylvain.todo.persistence.entity.Journal;
 import me.sylvain.todo.persistence.repository.JournalRepository;
-import me.sylvain.todo.shared.LatestJournalEntries;
+import me.sylvain.todo.shared.JournalEntries;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -22,7 +22,7 @@ public class JournalController {
     private final JournalRepository journalRepository;
     
     @Autowired
-    private LatestJournalEntries latestJournalEntries;
+    private JournalEntries journalEntries;
 
     public JournalController(JournalRepository journalRepository) {
         this.journalRepository = journalRepository;
@@ -30,15 +30,15 @@ public class JournalController {
 
     @GetMapping
     public ResponseEntity<List<Journal>> getAllEntries() {
-        List<Journal> allJournals = new ArrayList<>(journalRepository.findAll());
-        latestJournalEntries.clearList();
-        return ResponseEntity.status(HttpStatus.OK).body(allJournals);
+        List<Journal> wholeJournalList = new ArrayList<>(journalRepository.findAll());
+        journalEntries.clearList();
+        return ResponseEntity.status(HttpStatus.OK).body(wholeJournalList);
     }
 
     @GetMapping("/latest")
     public ResponseEntity<List<Journal>> getLatestEntries() {
-        List<Journal> latestJournals = new ArrayList<>(latestJournalEntries.getList());
-        latestJournalEntries.clearList();
-        return ResponseEntity.status(HttpStatus.OK).body(latestJournals);
+        List<Journal> latestEntriesList = new ArrayList<>(journalEntries.getList());
+        journalEntries.clearList();
+        return ResponseEntity.status(HttpStatus.OK).body(latestEntriesList);
     }
 }

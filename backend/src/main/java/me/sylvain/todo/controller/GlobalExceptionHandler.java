@@ -12,6 +12,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DataAccessException.class)
     public ResponseEntity<String> handleDatabaseError(DataAccessException ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                             .body("Database error: " + ex.getMessage());
+                             .body("Database access error: " + ex.getMessage());
     }
 }

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import me.sylvain.todo.persistence.entity.Journal;
 
 @Component
-public class LatestJournalEntries {
+public class JournalEntries {
     private List<Journal> list = new ArrayList<>();
 
     public void addEntry(Journal journal) {

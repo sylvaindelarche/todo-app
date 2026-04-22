@@ -40,11 +40,11 @@ public class ListController {
     
     @PostMapping
     public ResponseEntity<TodoList> createList(@Valid @RequestBody TodoListDTO listDTO) {
-        TodoList list = new TodoList();
-        if (listDTO.getTitle() != null) list.setTitle(listDTO.getTitle());
-        list.setArchived(false);
-        list.setTasks(new ArrayList<>());
-        TodoList createdList = listRepository.save(list);
+        TodoList todoList = new TodoList();
+        if (listDTO.getTitle() != null) todoList.setTitle(listDTO.getTitle());
+        todoList.setArchived(false);
+        todoList.setTasks(new ArrayList<>());
+        TodoList createdList = listRepository.save(todoList);
         rabbitPublisher.publish("Created list " + createdList.getTitle());
         return ResponseEntity.status(HttpStatus.OK).body(createdList);
     }
@@ -74,7 +74,7 @@ public class ListController {
     @PostMapping("/{id}/archive")
     public ResponseEntity<TodoList> archiveList(@PathVariable Long id) {
         return listRepository.findById(id).map(list -> {
-            list.setArchived(list.isArchived() ? false : true);
+            list.setArchived(!list.isArchived());
             return ResponseEntity.status(HttpStatus.OK).body(listRepository.save(list));
         }).orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
