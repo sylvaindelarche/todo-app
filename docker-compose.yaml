@@ -3,7 +3,7 @@ services:
     image: postgres:17.7-alpine
     restart: always
     environment:
-      POSTGRES_PASSWORD: postgres # unsecure
+      POSTGRES_PASSWORD: changeme
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
@@ -13,8 +13,8 @@ services:
     image: 'rabbitmq:3-alpine'
     restart: always
     environment:
-      RABBITMQ_DEFAULT_PASS: secret # unsecure
-      RABBITMQ_DEFAULT_USER: myuser
+      RABBITMQ_DEFAULT_PASS: changeme
+      RABBITMQ_DEFAULT_USER: rabbit
     ports:
       - '5672'
     networks:
@@ -31,9 +31,9 @@ services:
     environment:
       DB_URL: jdbc:postgresql://db:5432/
       DB_USER: postgres
-      DB_PASSWORD: postgres # unsecure
-      RABBITMQ_DEFAULT_PASS: secret # unsecure
-      RABBITMQ_DEFAULT_USER: myuser
+      DB_PASSWORD: changeme
+      RABBITMQ_DEFAULT_PASS: changeme
+      RABBITMQ_DEFAULT_USER: rabbit
     networks:
       - app-network
 
