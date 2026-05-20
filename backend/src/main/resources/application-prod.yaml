@@ -2,7 +2,7 @@ spring:
   application:
     name: Todo App
   datasource:
-    url: ${DB_URL}
+    url: jdbc:postgresql://${DB_NAME}:${DB_PORT}/
     driverClassName: org.postgresql.Driver
     username: ${DB_USER}
     password: ${DB_PASSWORD}

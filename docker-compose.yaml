@@ -29,7 +29,8 @@ services:
       - db
       - rabbitmq
     environment:
-      DB_URL: jdbc:postgresql://db:5432/
+      DB_NAME: db
+      DB_PORT: 5432
       DB_USER: postgres
       DB_PASSWORD: changeme
       RABBITMQ_DEFAULT_PASS: changeme
