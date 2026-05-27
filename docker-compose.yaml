@@ -33,8 +33,9 @@ services:
       DB_PORT: 5432
       DB_USER: postgres
       DB_PASSWORD: changeme
-      RABBITMQ_DEFAULT_PASS: changeme
-      RABBITMQ_DEFAULT_USER: rabbit
+      RABBITMQ_SERVER: rabbitmq
+      RABBITMQ_PASSWORD: changeme
+      RABBITMQ_USER: rabbit
     networks:
       - app-network
 

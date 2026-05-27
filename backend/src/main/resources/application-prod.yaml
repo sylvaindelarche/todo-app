@@ -12,9 +12,9 @@ spring:
       ddl-auto: update
     show-sql: false
   rabbitmq:
-    host: rabbitmq
-    username: ${RABBITMQ_DEFAULT_USER}
-    password: ${RABBITMQ_DEFAULT_PASS}
+    host: ${RABBITMQ_SERVER}
+    username: ${RABBITMQ_USER}
+    password: ${RABBITMQ_PASSWORD}
 server:
   error:
     includeStacktrace: NEVER
